@@ -6,7 +6,7 @@ from typing import List
 class PhoneExtractor:
     def __init__(self) -> None:
         self.phone_pattern: re.Pattern = re.compile(r'(?:\+?7|8|)(?:[-\s().]*\d){9,10}', re.VERBOSE)
-        self.unique_phones: set = set()
+        self.unique_phones: dict = {}
 
     def _normalize_phone(self, phone_number: str) -> str | None:
         # Delete all non-numeric symbols
@@ -36,8 +36,8 @@ class PhoneExtractor:
                     continue
                 normalized_number = self._normalize_phone(candidate)
                 if normalized_number and normalized_number not in self.unique_phones:
-                    self.unique_phones.add(normalized_number)
-        return list(self.unique_phones)
+                    self.unique_phones[normalized_number] = None
+        return list(self.unique_phones.keys())
 
 
 def main() -> None:
